@@ -15,7 +15,7 @@ binge studing:
 <li>There is Only "one side to the cards", The user watches and the Addon will automatically grade cards as good or bad based on "whether they have seen subtitles." so you won't see the sub if you are Confident enought that you understand (which is good)</li>
 </ul></strong>
 
-<img src="https://i.imgur.com/kp1EA4r.png">
+<video src=‘https://imgur.com/UnuNQhf’ width=180/>
 <strong><a href="https://imgur.com/UnuNQhf" rel="nofollow">Video Showcase</a></strong>
 
 
