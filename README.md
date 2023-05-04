@@ -1,6 +1,7 @@
 # bingo
 binge studying but without ankii
 binge studing:
+
 <strong>---NEW Video Language Learning without Pain (helps you "not" look at subtitles)---</strong>
 ----Overview----
 
