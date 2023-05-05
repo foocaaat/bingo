@@ -36,7 +36,9 @@ import datetime
 import shutil
 import time
 
+# Define a function to switch to English audio track if available
 ###############
+
 #class DevNull:
 #    def write(self, msg):
 #        pass
@@ -50,10 +52,34 @@ is_old_fillRev = True
 
 
 
+try:
+    with open(os.path.abspath(os.path.join(script_dir, "mpvanki.json")), "r") as file:
+        data = json.load(file)
+    ankivideo = data.get("ankivideo")
+except:
+    print("Make sure you selected the video folder.")
+    try:
+        with open(os.path.abspath(os.path.join(script_dir, "mpvanki.json")), "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        # If the file doesn't exist, create an empty dictionary
+        data = {}
+
+    # Add or update the object in the dictionary
+    data["ankivideo"] = f"{input('videos directory: ')}"
+
+    # Write the updated dictionary to the JSON file
+    with open(os.path.abspath(os.path.join(script_dir, "mpvanki.json")), "w") as file:
+        json.dump(data, file, indent=4)
+    with open(os.path.abspath(os.path.join(script_dir, "mpvanki.json")), "r") as file:
+        data = json.load(file)
+    ankivideo = data.get("ankivideo")
+
+
 def jessygo(object_key, object_value):
     # Load the JSON file
     try:
-        with open(os.path.abspath(os.path.join(script_dir, "mpvanki.json")), "r") as file:
+        with open(os.path.abspath(os.path.join(ankivideo, "stamp", "mpvanki.json")), "r") as file:
             data = json.load(file)
     except FileNotFoundError:
         # If the file doesn't exist, create an empty dictionary
@@ -63,13 +89,13 @@ def jessygo(object_key, object_value):
     data[object_key] = object_value
 
     # Write the updated dictionary to the JSON file
-    with open(os.path.abspath(os.path.join(script_dir, "mpvanki.json")), "w") as file:
+    with open(os.path.abspath(os.path.join(ankivideo, "stamp", "mpvanki.json")), "w") as file:
         json.dump(data, file, indent=4)
 
 def jessycome(object_key):
     # Load the JSON file
     try:
-        with open(os.path.abspath(os.path.join(script_dir, "mpvanki.json")), "r") as file:
+        with open(os.path.abspath(os.path.join(ankivideo, "stamp", "mpvanki.json")), "r") as file:
             data = json.load(file)
     except FileNotFoundError:
         # If the file doesn't exist, return None
@@ -77,6 +103,17 @@ def jessycome(object_key):
 
     # Return the value of the object
     return data.get(object_key)
+
+
+
+
+
+
+
+
+
+
+
 
 def  new_fillRev(self, recursing=False) -> bool:
         try:
@@ -275,7 +312,6 @@ def addnewstuff(number=0):
     global sniff
     sniff = []
     global ankivideo
-    ankivideo = jessycome("ankivideo") 
     if not os.path.exists(os.path.abspath(str(jessycome("ankivideo")))):
 #         showInfo("Make sure you selected the video folder.")
         print("Make sure you selected the video folder.")
@@ -412,14 +448,6 @@ if progre != []:
 
 
 
-try:
-    ankivideo = jessycome("ankivideo") 
-except:
-    try:
-#         showInfo("Make sure you selected the video folder.")
-        print("Make sure you selected the video folder.")
-    except:
-        pass
 
 
 
@@ -449,7 +477,6 @@ def mpvankii(v1, v2, v3, v4, v5, v6):
         dueToday()
     else:
         noduetoday = 0
-    ankivideo = str(jessycome("ankivideo"))
     os.path.abspath(os.path.join(ankivideo, v1))
     if not os.path.exists(os.path.abspath(os.path.join(ankivideo, v1))):
         try:
@@ -490,7 +517,6 @@ def mpvankii(v1, v2, v3, v4, v5, v6):
     else:
         mpv.command("set_property", "sub-visibility", False)
 
-
     workingfile=str(mpv.command("get_property", "path"))
     if os.path.abspath(str(workingfile)) != os.path.abspath(os.path.join(ankivideo, v1)):
         mpv.command("loadfile", os.path.abspath(os.path.join(ankivideo, v1)))
@@ -514,6 +540,17 @@ def mpvankii(v1, v2, v3, v4, v5, v6):
             else:
                 mpv.command("seek", str(START), "absolute")
 
+#     if "1" == v6:
+# #         mpv.command("set_property", "sub-visibility", True)
+#         mpv.command("set", "aid", "0") 
+#         mpv.command("cycle", "audio")
+#         mpv.command("cycle", "audio")
+#     else:
+# #         mpv.command("set_property", "sub-visibility", False)
+#         mpv.command("set", "aid", "0") 
+#         mpv.command("cycle", "audio")
+#         mpv.command("cycle", "audio")
+#         mpv.command("cycle", "audio")
     mpv.command("set_property", "pause", False)
 
     
@@ -693,6 +730,7 @@ def run_command_field(num , nw="no"):
 
 #         mpv.command("set", "fullscreen", "yes")
         mpv.command("set", "video-align-y", "-1")
+        mpv.command("set_property", "sub-visibility", False)
 
     mpvankii(mpvanki_filename , mpvanki_start , mpvanki_end , mpvanki_number , new, sub)
 
@@ -920,14 +958,12 @@ else:
 if (args.file):
     t = time.localtime()
     current_time = time.strftime("%Y%m%d%H%M%S", t)
-    print(current_time)
     file = os.path.join(str(ankivideo),"stamp", args.file) 
-    if not os.path.exists(os.path.abspath(os.path.join(str(jessycome("ankivideo")), "backup"))):
-        os.makedirs(os.path.abspath(os.path.join(str(jessycome("ankivideo")), "backup")))
-    shutil.copyfile(os.path.join(str(ankivideo),"stamp", args.file), os.path.join(str(ankivideo),"backup", f'{current_time}-{args.file}'))
+    if not os.path.exists(os.path.abspath(os.path.join(ankivideo, "backup"))):
+        os.makedirs(os.path.abspath(os.path.join(ankivideo, "backup")))
+    shutil.copyfile(os.path.join(ankivideo,"stamp", args.file), os.path.join(str(ankivideo),"backup", f'{current_time}-{args.file}'))
 
 
-print(newcards)
 ansa = 0
 global EE
 global EA
@@ -983,7 +1019,6 @@ while True:
 
     if undoer == 1:
         if len(nues):
-            print(nues[-1][1]) 
             nue = nues[-1][0] 
             nues = nues[:-1]
             currentintervalmini(lines[nue - 1])
@@ -996,7 +1031,6 @@ while True:
         break
 
 
-print("next")
 nues = []
 nue = 0
 ansa = 3
