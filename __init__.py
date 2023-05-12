@@ -540,17 +540,17 @@ def mpvankii(v1, v2, v3, v4, v5, v6):
             else:
                 mpv.command("seek", str(START), "absolute")
 
-#     if "1" == v6:
-# #         mpv.command("set_property", "sub-visibility", True)
-#         mpv.command("set", "aid", "0") 
-#         mpv.command("cycle", "audio")
-#         mpv.command("cycle", "audio")
-#     else:
-# #         mpv.command("set_property", "sub-visibility", False)
-#         mpv.command("set", "aid", "0") 
-#         mpv.command("cycle", "audio")
-#         mpv.command("cycle", "audio")
-#         mpv.command("cycle", "audio")
+    if "1" == v6:
+#         mpv.command("set_property", "sub-visibility", True)
+        mpv.command("set", "aid", "0") 
+        mpv.command("cycle", "audio")
+        mpv.command("cycle", "audio")
+    else:
+#         mpv.command("set_property", "sub-visibility", False)
+        mpv.command("set", "aid", "0") 
+        mpv.command("cycle", "audio")
+        mpv.command("cycle", "audio")
+        mpv.command("cycle", "audio")
     mpv.command("set_property", "pause", False)
 
     
@@ -641,10 +641,8 @@ def answere():
         if len(nues):
             mpv.command("show-text", "Undo") 
             if neww == "yes":
-                if nues[-1][1] != "yes":
+                if nues[-1][1] != 1:
                     newcards = newcards + 1
-            if neww == "yes":
-                if nues[-1][1] != "yes":
                     counterr = counterr + 1 
             elif neww != "yes":
                 if nues[-1][1] != 1:
@@ -663,7 +661,7 @@ def answere():
             editinterval(nue - 1, "deleted", 0)
             mpv.command("show-text", "Deleted") 
             global deleted
-            deleted = "yes"
+            deleted = 1
             Break = 1
         except:
             pass
@@ -728,7 +726,7 @@ def run_command_field(num , nw="no"):
         mpv.bind_key_press("l", lambda: run_command_field(1))
         mpv.bind_key_press("j",lambda: hola(1))
 
-#         mpv.command("set", "fullscreen", "yes")
+        mpv.command("set", "fullscreen", "yes")
         mpv.command("set", "video-align-y", "-1")
         mpv.command("set_property", "sub-visibility", False)
 
@@ -1000,7 +998,7 @@ ansa = 3
 
 counterr = counterr + newcards
 neww = "yes"
-deleted = "no"
+deleted = 0
 while True:
     currentintervalmini(lines[nue - 1])
     if datee == "new":
@@ -1013,8 +1011,6 @@ while True:
             if Break == 1: 
                 if undoer != 1:
                     nues.append((nue, deleted))
-                    if deleted == "yes":
-                        deleted == "no"
                 break
 
     if undoer == 1:
@@ -1026,6 +1022,7 @@ while True:
         undoer = 0
     else:
         nue = nue + 1
+    deleted = 0
     ansa = 3
     if Break2 == 1 or newcards == 0: 
         break
